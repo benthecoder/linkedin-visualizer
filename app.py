@@ -55,6 +55,10 @@ def main():
     st.title('LinkedIn Connection Network 🕸️')
     st.caption('Visualize your LinkedIn network now!')
     st.subheader("Upload data 💾")
+    st.write('''
+    Don't know where to find it? 
+    Read [this article](https://medium.com/bitgrit-data-science-publication/visualize-your-linkedin-network-with-python-59a213786c4) to find out
+    ''')
     usr_file = st.file_uploader("Upload your Connection.csv file 👇", type={"csv"})
 
     if not usr_file:
