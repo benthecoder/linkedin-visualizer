@@ -1,8 +1,14 @@
 # Linkedin Visualizer 🕸️
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/benthecoder/linkedin-visualizer/yourApp/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/benthecoder/linkedin-visualizer/main/app.py)
 
 Visualize your LinkedIn connections with Pyvis and Networkx
+
+![streamlit app gif](media/app.gif)
+
+Interested in how the code works?
+
+Read the article for this project: [Visualize your LinkedIn Network with Python](https://medium.com/bitgrit-data-science-publication/visualize-your-linkedin-network-with-python-59a213786c4)
 
 ## Run Locally
 

@@ -43,8 +43,6 @@ def plot_hist(df):
     fig.update_layout(bargap=0.2, xaxis_title="Date")
     return fig
 
-def plot_network():
-    pass
 
 def main():
     # streamlit config
@@ -55,7 +53,7 @@ def main():
     )
 
     st.title('LinkedIn Connection Network 🕸️')
-
+    st.caption('Visualize your LinkedIn network now!')
     st.subheader("Upload data 💾")
     usr_file = st.file_uploader("Upload your Connection.csv file 👇", type={"csv"})
 
@@ -101,6 +99,9 @@ def main():
     st.sidebar.subheader("Connection network")
     network_num = st.sidebar.slider('Select cutoff point (smaller = larger network)', 2, 50, 6,  key="3")
     generate_network(df_clean, agg_df_company, network_num)
+
+    st.sidebar.write("[Source Code](https://github.com/benthecoder/linkedin-visualizer)")
+
 
 if __name__ == '__main__':
     main()
