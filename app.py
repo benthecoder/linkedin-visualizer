@@ -83,6 +83,8 @@ def main():
         """
     )
 
+    st.caption("Scroll down 🖱️⬇️ to see some cool visualizations!")
+
     st.sidebar.subheader("Sliders to plot more/less data")
     st.sidebar.subheader("Bar Charts")
 
