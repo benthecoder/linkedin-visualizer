@@ -1,3 +1,4 @@
+from re import I
 import streamlit.components.v1 as components
 import pandas as pd
 
@@ -9,7 +10,6 @@ from thefuzz import process
 import plotly.express as px
 import networkx as nx
 from pyvis.network import Network
-
 
 def clean_df(df: pd.DataFrame, privacy: bool = False) -> pd.DataFrame:
     """This function cleans the dataframe containing LinkedIn
@@ -51,6 +51,8 @@ def clean_df(df: pd.DataFrame, privacy: bool = False) -> pd.DataFrame:
 
     # fuzzy match on Data Scientist titles
     replace_fuzzywuzzy_match(clean_df, "position", "Data Scientist")
+    # fuzzy match on Software Engineer titles
+    replace_fuzzywuzzy_match(clean_df, "position", "Software Engineer", min_ratio=85)
 
     return clean_df
 
@@ -129,8 +131,8 @@ def plot_bar(df: pd.DataFrame, rows: int):
     return fig
 
 
-def plot_line(df: pd.DataFrame):
-    df = df.value_counts().reset_index()
+def plot_timeline(df: pd.DataFrame):
+    df = df["connected_on"].value_counts().reset_index()
     df.rename(columns={"index": "connected_on", "connected_on": "count"}, inplace=True)
     df = df.sort_values(by="connected_on", ascending=True)
     fig = px.line(df, x="connected_on", y="count")
@@ -157,6 +159,26 @@ def plot_line(df: pd.DataFrame):
     )
 
     return fig
+
+def plot_cumsum(df: pd.DataFrame):
+    df = df["connected_on"].value_counts().reset_index()
+    df.rename(columns={"index": "connected_on", "connected_on": "count"}, inplace=True)
+    df = df.sort_values(by="connected_on", ascending=True)
+    df["cum_sum"] = df["count"].cumsum()
+
+    fig = px.area(df, x = 'connected_on', y = 'cum_sum')
+
+    fig.update_layout(
+        xaxis=dict(
+            rangeslider=dict(visible=True),
+            type="date",
+        ),
+        xaxis_title="Date",
+        yaxis_title="count"
+    )
+
+    return fig
+
 
 
 def generate_network(df: pd.DataFrame, agg_df: pd.DataFrame, cutoff: int = 5):
@@ -201,6 +223,7 @@ def generate_network(df: pd.DataFrame, agg_df: pd.DataFrame, cutoff: int = 5):
     # generate the graph
     nt.from_nx(g)
     nt.hrepulsion()
+    nt.toggle_stabilization(True)
     nt.show("network.html")
 
     # Save and read graph as HTML file (on Streamlit Sharing)
