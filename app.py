@@ -6,6 +6,7 @@ import janitor
 import streamlit.components.v1 as components
 from zipfile import ZipFile
 from pathlib import Path
+import os
 
 # helper functions
 from helpers import *
@@ -29,14 +30,16 @@ def main():
     """
     )
 
+    dir_path = '/data'
+    try:
+        os.rmdir(dir_path)
+    except OSError as e:
+        print("Error: %s : %s" % (dir_path, e.strerror))
+        
     st.caption("Don't worry, your data is in safe hands")
 
-    
     ## upload files
     usr_file = st.file_uploader("Upload/Drop your downloaded zip file 👇", type={"zip"})
-
-    if usr_file is None:
-        return
 
     with ZipFile(usr_file, 'r') as zipObj:
         # Extract all the contents of zip file in current directory
@@ -44,6 +47,8 @@ def main():
 
     for p in Path('./data').glob('*.csv'):
         connections_file = p.name
+
+
 
     df_ori = pd.read_csv(f"data/{connections_file}", skiprows=3)
     df_clean = clean_df(df_ori)
