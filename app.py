@@ -33,7 +33,7 @@ def main():
     st.caption("Don't worry, your data is in safe hands")
 
     # remove data folder in case it exists
-    shutil.rmtree('/data', ignore_errors=True)
+    shutil.rmtree('data', ignore_errors=True)
 
     ## upload files
     usr_file = st.file_uploader("Upload/Drop your downloaded zip file 👇", type={"zip"})
