@@ -41,7 +41,7 @@ def clean_df(df: pd.DataFrame, privacy: bool = False) -> pd.DataFrame:
             .drop(columns=["first_name", "last_name"])
             # truncate company names that exceed
             .transform_column("company", lambda s: s[:35])
-            .to_datetime("connected_on", format="%d-%b-%y")
+            .to_datetime("connected_on")
             .filter_string(
                 column_name="company",
                 search_string=r"[Ff]reelance|[Ss]elf-[Ee]mployed|\.|\-",
