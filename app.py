@@ -30,13 +30,14 @@ def main():
     """
     )
 
-    dir_path = '/data'
-    try:
-        os.rmdir(dir_path)
-    except OSError as e:
-        print("Error: %s : %s" % (dir_path, e.strerror))
-        
     st.caption("Don't worry, your data is in safe hands")
+
+    dir_path = './data'
+    if os.path.isdir(dir_path):
+        try:
+            os.rmdir(dir_path)
+        except OSError as e:
+            print("Error: %s : %s" % (dir_path, e.strerror))
 
     ## upload files
     usr_file = st.file_uploader("Upload/Drop your downloaded zip file 👇", type={"zip"})
