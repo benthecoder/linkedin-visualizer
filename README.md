@@ -4,16 +4,9 @@
 
 Get helpful statistics on your LinkedIn connection now!
 
-![streamlit app gif](media/app.gif)
-
-To try this app out, first download your connections data. Here's how 👇
-
-1. Click on your Me drop-down on the homepage
-1. Head over to “Settings & Privacy”
-1. Click on “Data Privacy”
-1. Click on “Get a copy of your data”
-
 Read the article to know more about this project: [Visualize your LinkedIn Network with Python](https://medium.com/bitgrit-data-science-publication/visualize-your-linkedin-network-with-python-59a213786c4)
+
+![streamlit app gif](media/app.gif)
 
 ## Features
 
