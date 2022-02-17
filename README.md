@@ -4,8 +4,6 @@
 
 Get helpful statistics on your LinkedIn connection now!
 
-
-
 ![streamlit app gif](media/app.gif)
 
 To try this app out, first download your connections data. Here's how 👇
@@ -32,6 +30,44 @@ This app tells you the information below
 - Last but not least, a "who you can cold email" section that provides a list of emails of your connections (perks of LinkedIn connections!)
 
 [Use it now!](https://share.streamlit.io/benthecoder/linkedin-visualizer/main/app.py)
+
+## Images
+
+![stats](media/app/stats.png)
+![barchart](media/app/barchart.png)
+![timeseries](media/app/timeseries.png)
+![network](media/app/network.png)
+
+## How to get the data?
+
+First head over to the home page and click on your profile image
+
+<img src="media/guide/1.png" width="400">
+
+Click on the settings
+
+<img src="media/guide/2.png" height="400">
+
+Head to the data privacy tab
+
+<img src="media/guide/3.png" height="400">
+
+Find "Get a copy of your data"
+
+![1](media/guide/4.png)
+
+Click on connections only
+
+![1](media/guide/5.png)
+
+Click request archive and type your LinkedIn password
+
+![1](media/guide/6.png)'
+
+Now just wait a few minutes and the archive will arrive to your mail!
+![1](media/guide/7.png)
+
+Once you get the data, just drag it to the file uploader and enjoy the insights :)
 
 ## Run Locally
 
@@ -70,7 +106,6 @@ Run streamlit
 ```bash
   streamlit run app.py
 ```
-
 
 ## Contributing
 
