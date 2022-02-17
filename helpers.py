@@ -11,6 +11,7 @@ import plotly.express as px
 import networkx as nx
 from pyvis.network import Network
 
+
 def clean_df(df: pd.DataFrame, privacy: bool = False) -> pd.DataFrame:
     """This function cleans the dataframe containing LinkedIn
     connections data"
@@ -52,7 +53,8 @@ def clean_df(df: pd.DataFrame, privacy: bool = False) -> pd.DataFrame:
     # fuzzy match on Data Scientist titles
     replace_fuzzywuzzy_match(clean_df, "position", "Data Scientist")
     # fuzzy match on Software Engineer titles
-    replace_fuzzywuzzy_match(clean_df, "position", "Software Engineer", min_ratio=85)
+    replace_fuzzywuzzy_match(clean_df, "position",
+                             "Software Engineer", min_ratio=85)
 
     return clean_df
 
@@ -77,7 +79,8 @@ def replace_fuzzywuzzy_match(
     matches = process.extract(query, pos_names, limit=500)
 
     # filter matches with ratio >= 75
-    matching_pos_name = [match[0] for match in matches if match[1] >= min_ratio]
+    matching_pos_name = [match[0]
+                         for match in matches if match[1] >= min_ratio]
 
     # for position in above_ratio:
     #     print(f"replacing {position} with {query}")
@@ -133,7 +136,8 @@ def plot_bar(df: pd.DataFrame, rows: int):
 
 def plot_timeline(df: pd.DataFrame):
     df = df["connected_on"].value_counts().reset_index()
-    df.rename(columns={"index": "connected_on", "connected_on": "count"}, inplace=True)
+    df.rename(columns={"index": "connected_on",
+              "connected_on": "count"}, inplace=True)
     df = df.sort_values(by="connected_on", ascending=True)
     fig = px.line(df, x="connected_on", y="count")
 
@@ -143,10 +147,14 @@ def plot_timeline(df: pd.DataFrame):
             rangeselector=dict(
                 buttons=list(
                     [
-                        dict(count=1, label="1m", step="month", stepmode="backward"),
-                        dict(count=6, label="6m", step="month", stepmode="backward"),
-                        dict(count=1, label="YTD", step="year", stepmode="todate"),
-                        dict(count=1, label="1y", step="year", stepmode="backward"),
+                        dict(count=1, label="1m", step="month",
+                             stepmode="backward"),
+                        dict(count=6, label="6m", step="month",
+                             stepmode="backward"),
+                        dict(count=1, label="YTD",
+                             step="year", stepmode="todate"),
+                        dict(count=1, label="1y", step="year",
+                             stepmode="backward"),
                         dict(step="all"),
                     ]
                 ),
@@ -160,13 +168,15 @@ def plot_timeline(df: pd.DataFrame):
 
     return fig
 
+
 def plot_cumsum(df: pd.DataFrame):
     df = df["connected_on"].value_counts().reset_index()
-    df.rename(columns={"index": "connected_on", "connected_on": "count"}, inplace=True)
+    df.rename(columns={"index": "connected_on",
+              "connected_on": "count"}, inplace=True)
     df = df.sort_values(by="connected_on", ascending=True)
     df["cum_sum"] = df["count"].cumsum()
 
-    fig = px.area(df, x = 'connected_on', y = 'cum_sum')
+    fig = px.area(df, x='connected_on', y='cum_sum')
 
     fig.update_layout(
         xaxis=dict(
@@ -178,7 +188,6 @@ def plot_cumsum(df: pd.DataFrame):
     )
 
     return fig
-
 
 
 def generate_network(df: pd.DataFrame, agg_df: pd.DataFrame, cutoff: int = 5):
@@ -198,7 +207,8 @@ def generate_network(df: pd.DataFrame, agg_df: pd.DataFrame, cutoff: int = 5):
     g.add_node("you")
 
     # create network and provide specifications
-    nt = Network(height="700px", width="700px", bgcolor="black", font_color="white")
+    nt = Network(height="700px", width="700px",
+                 bgcolor="black", font_color="white")
 
     # reduce size of connections
     df_reduced = agg_df.loc[agg_df["count"] >= cutoff]

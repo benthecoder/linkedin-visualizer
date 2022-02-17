@@ -26,17 +26,19 @@ def main():
     st.write(
         """
     Don't know where to find it? 
-    [Click here](https://tinyurl.com/yezvlquu) to find out
+    [Click here](https://github.com/benthecoder/linkedin-visualizer#how-to-get-the-data)
     """
     )
 
-    st.caption("Don't worry, your data is in safe hands")
+    st.write(
+        '''Don't worry, [your data is in safe hands](https://docs.streamlit.io/streamlit-cloud/trust-and-security)''')
 
     # remove data folder in case it exists
     shutil.rmtree('data', ignore_errors=True)
 
-    ## upload files
-    usr_file = st.file_uploader("Upload/Drop your downloaded zip file 👇", type={"zip"})
+    # upload files
+    usr_file = st.file_uploader(
+        "Upload/Drop your downloaded zip file 👇", type={"zip"})
 
     if usr_file is None:
         return
@@ -54,18 +56,17 @@ def main():
     st.caption("Thank you! Now scroll down and enjoy!")
     st.subheader("See your data 👀")
 
-    ## View data
+    # View data
     if st.checkbox("Show raw data"):
         st.dataframe(df_ori)
 
     if st.checkbox("Show clean data"):
         st.dataframe(df_clean)
 
-    ## Data wrangling
+    # Data wrangling
     agg_df_company = agg_sum(df_clean, "company")
     agg_df_position = agg_sum(df_clean, "position")
 
-    
     # calculating stats
     st.subheader("Here's a breakdown of your connections 🪄")
 
@@ -82,13 +83,13 @@ def main():
         & (df_clean["connected_on"].dt.year == 2022)
     ]
 
-    ## Metrics
+    # Metrics
     conn, comp = st.columns(2)
     conn.metric("Total Connections", f"{total_conn}", len(this_month_df))
     comp.metric("Top Company", f"{top_comp}")
     st.metric("Top Position", f"{top_pos}")
 
-    ## Summary
+    # Summary
     st.caption("full summary")
     st.markdown(
         f"""
@@ -102,13 +103,11 @@ def main():
 
     st.caption("Scroll down 🖱️⬇️ to see some cool visualizations!")
 
-
-    ## visualizations
+    # visualizations
     st.sidebar.subheader("Sliders to plot more/less data")
     st.sidebar.subheader("Bar Charts")
 
-
-    ## top n companies and positions
+    # top n companies and positions
     st.subheader("Top 10 companies")
     top_n = st.sidebar.slider("Top n", 0, 50, 10, key="1")
     st.plotly_chart(plot_bar(agg_df_company, top_n))
@@ -121,19 +120,18 @@ def main():
     if st.checkbox("View top positions data", key="position"):
         st.dataframe(agg_df_position)
 
-
-    ## connections timeline
+    # connections timeline
     st.subheader("Timeline of connections")
     st.plotly_chart(plot_timeline(df_clean))
 
-    ## cumulative graph
+    # cumulative graph
     st.subheader("Connections overtime")
     st.plotly_chart(plot_cumsum(df_clean))
 
-    ## Graph network
+    # Graph network
     st.sidebar.subheader("Connection network")
     network_num = st.sidebar.slider(
-        "cutoff point for connections (the smaller it is the larger the network)", 
+        "cutoff point for connections (the smaller it is the larger the network)",
         2, 50, 6, key="3"
     )
 
@@ -143,8 +141,7 @@ def main():
     st.subheader("Position Network")
     generate_network(df_clean, agg_df_position, network_num)
 
-
-    ## emails
+    # emails
     st.write("Now to put your connections to good use")
     st.subheader("Who can you cold email 📧?")
 
