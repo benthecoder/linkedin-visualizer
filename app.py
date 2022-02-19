@@ -31,26 +31,27 @@ def main():
     )
 
     st.write(
-        '''Don't worry, [your data is in safe hands](https://docs.streamlit.io/streamlit-cloud/trust-and-security)''')
+        """Don't worry, [your data is in safe hands](https://docs.streamlit.io/streamlit-cloud/trust-and-security)"""
+    )
 
     # remove data folder in case it exists
-    shutil.rmtree('data', ignore_errors=True)
+    shutil.rmtree("data", ignore_errors=True)
 
     # upload files
-    usr_file = st.file_uploader(
-        "Upload/Drop your downloaded zip file 👇", type={"zip"})
+    usr_file = st.file_uploader("Upload/Drop your downloaded zip file 👇", type={"zip"})
 
     if usr_file is None:
         return
 
-    with ZipFile(usr_file, 'r') as zipObj:
+    with ZipFile(usr_file, "r") as zipObj:
         # Extract all the contents of zip file in current directory
-        zipObj.extractall('data')
+        zipObj.extractall("data")
 
-    for p in Path('./data').glob('*.csv'):
+    for p in Path("./data").glob("*.csv"):
         connections_file = p.name
 
     df_ori = pd.read_csv(f"data/{connections_file}", skiprows=3)
+    # shutil.rmtree("data", ignore_errors=True)
     df_clean = clean_df(df_ori)
 
     st.caption("Thank you! Now scroll down and enjoy!")
@@ -132,7 +133,10 @@ def main():
     st.sidebar.subheader("Connection network")
     network_num = st.sidebar.slider(
         "cutoff point for connections (the smaller it is the larger the network)",
-        2, 50, 6, key="3"
+        2,
+        50,
+        6,
+        key="3",
     )
 
     st.subheader("Company Network")
