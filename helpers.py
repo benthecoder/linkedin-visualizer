@@ -53,8 +53,7 @@ def clean_df(df: pd.DataFrame, privacy: bool = False) -> pd.DataFrame:
     # fuzzy match on Data Scientist titles
     replace_fuzzywuzzy_match(clean_df, "position", "Data Scientist")
     # fuzzy match on Software Engineer titles
-    replace_fuzzywuzzy_match(clean_df, "position",
-                             "Software Engineer", min_ratio=85)
+    replace_fuzzywuzzy_match(clean_df, "position", "Software Engineer", min_ratio=85)
 
     return clean_df
 
@@ -79,8 +78,7 @@ def replace_fuzzywuzzy_match(
     matches = process.extract(query, pos_names, limit=500)
 
     # filter matches with ratio >= 75
-    matching_pos_name = [match[0]
-                         for match in matches if match[1] >= min_ratio]
+    matching_pos_name = [match[0] for match in matches if match[1] >= min_ratio]
 
     # for position in above_ratio:
     #     print(f"replacing {position} with {query}")
@@ -111,7 +109,7 @@ def agg_sum(df: pd.DataFrame, name: str) -> pd.DataFrame:
 def plot_bar(df: pd.DataFrame, rows: int):
     height = 500
     if rows > 25:
-        height = 700
+        height = 900
 
     name, count = list(df.columns)
 
@@ -136,8 +134,7 @@ def plot_bar(df: pd.DataFrame, rows: int):
 
 def plot_timeline(df: pd.DataFrame):
     df = df["connected_on"].value_counts().reset_index()
-    df.rename(columns={"index": "connected_on",
-              "connected_on": "count"}, inplace=True)
+    df.rename(columns={"index": "connected_on", "connected_on": "count"}, inplace=True)
     df = df.sort_values(by="connected_on", ascending=True)
     fig = px.line(df, x="connected_on", y="count")
 
@@ -147,14 +144,10 @@ def plot_timeline(df: pd.DataFrame):
             rangeselector=dict(
                 buttons=list(
                     [
-                        dict(count=1, label="1m", step="month",
-                             stepmode="backward"),
-                        dict(count=6, label="6m", step="month",
-                             stepmode="backward"),
-                        dict(count=1, label="YTD",
-                             step="year", stepmode="todate"),
-                        dict(count=1, label="1y", step="year",
-                             stepmode="backward"),
+                        dict(count=1, label="1m", step="month", stepmode="backward"),
+                        dict(count=6, label="6m", step="month", stepmode="backward"),
+                        dict(count=1, label="YTD", step="year", stepmode="todate"),
+                        dict(count=1, label="1y", step="year", stepmode="backward"),
                         dict(step="all"),
                     ]
                 ),
@@ -171,12 +164,11 @@ def plot_timeline(df: pd.DataFrame):
 
 def plot_cumsum(df: pd.DataFrame):
     df = df["connected_on"].value_counts().reset_index()
-    df.rename(columns={"index": "connected_on",
-              "connected_on": "count"}, inplace=True)
+    df.rename(columns={"index": "connected_on", "connected_on": "count"}, inplace=True)
     df = df.sort_values(by="connected_on", ascending=True)
     df["cum_sum"] = df["count"].cumsum()
 
-    fig = px.area(df, x='connected_on', y='cum_sum')
+    fig = px.area(df, x="connected_on", y="cum_sum")
 
     fig.update_layout(
         xaxis=dict(
@@ -184,7 +176,7 @@ def plot_cumsum(df: pd.DataFrame):
             type="date",
         ),
         xaxis_title="Date",
-        yaxis_title="count"
+        yaxis_title="count",
     )
 
     return fig
@@ -207,8 +199,7 @@ def generate_network(df: pd.DataFrame, agg_df: pd.DataFrame, cutoff: int = 5):
     g.add_node("you")
 
     # create network and provide specifications
-    nt = Network(height="700px", width="700px",
-                 bgcolor="black", font_color="white")
+    nt = Network(height="600px", width="650px", bgcolor="black", font_color="white")
 
     # reduce size of connections
     df_reduced = agg_df.loc[agg_df["count"] >= cutoff]
@@ -249,4 +240,4 @@ def generate_network(df: pd.DataFrame, agg_df: pd.DataFrame, cutoff: int = 5):
         HtmlFile = open(f"{path}/network.html", "r", encoding="utf-8")
 
     # Load HTML file in HTML component for display on Streamlit page
-    components.html(HtmlFile.read(), width=1000, height=800)
+    components.html(HtmlFile.read(), height=700, width=700)
