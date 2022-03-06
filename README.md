@@ -76,6 +76,21 @@ Go to the project directory
   cd linkedin-visualizer
 ```
 
+### Using Docker
+
+Build an Image
+```
+docker build -t linkedin-visualizer:1.0 .
+```
+
+Run the Image
+```
+docker run -p 8501:8501 linkedin-visualizer:1.0
+```
+
+The app is now live on http://localhost:8501/
+
+### Using Conda
 Create Conda environment
 
 ```bash
