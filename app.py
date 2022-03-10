@@ -29,12 +29,12 @@ def get_data() -> pd.DataFrame:
     for p in Path("./data").glob("*.csv"):
         connections_file = p.name
 
-    df = pd.read_csv(f"data/{connections_file}", skiprows=3)
+    raw_df = pd.read_csv(f"data/{connections_file}", skiprows=3)
 
     # delete the data
     shutil.rmtree("data", ignore_errors=True)
 
-    return df
+    return raw_df
 
 
 def main():
@@ -45,6 +45,7 @@ def main():
         initial_sidebar_state="expanded",
     )
 
+    # import bootstrap
     st.markdown(
         """
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -84,7 +85,7 @@ def main():
 
     # View data
     if st.checkbox("Show raw data"):
-        st.dataframe(df_ori)
+        df_ori
 
     # Data wrangling
     agg_df_company = agg_sum(df_clean, "company")
@@ -98,7 +99,6 @@ def main():
     # Getting some stats
     total_conn = len(df_ori)
     top_pos = agg_df_position["position"][0]
-    bottom_pos = agg_df_position["position"]
     top_comp = agg_df_company["company"][0]
     second_comp = agg_df_company["company"][1]
     top_pos_count = agg_df_position["count"][0]
@@ -128,9 +128,8 @@ def main():
     st.markdown(
         f"""
         - You have _{len(this_month_df)}_ new ⭐ connections this month, with a total of _{total_conn}_!
-        - Most of your connections work at **{top_comp}** (dream company?), closely followed by {second_comp}
+        - Most of your connections work at **{top_comp}**" (dream company?), closely followed by {second_comp}
         - You love connecting with people 🤵 with the title – **{top_pos}**, _{top_pos_count}_ of them!
-        - Some rare job titles you're connected with are 
         - Your first ever connection is {first_c['name']} and they work as a {first_c.position} at {first_c.company}
         - Your most recent connection is {last_c['name']} and they work as a {last_c.position} at {last_c.company}
 
