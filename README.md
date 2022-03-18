@@ -55,7 +55,7 @@ Click on connections only
 
 Click request archive and type your LinkedIn password
 
-![1](media/guide/6.png)'
+![1](media/guide/6.png)
 
 Now just wait a few minutes and the archive will arrive to your mail!
 ![1](media/guide/7.png)
@@ -79,11 +79,13 @@ Go to the project directory
 ### Using Docker
 
 Build an Image
+
 ```
 docker build -t linkedin-visualizer:1.0 .
 ```
 
 Run the Image
+
 ```
 docker run -p 8501:8501 linkedin-visualizer:1.0
 ```
@@ -91,6 +93,7 @@ docker run -p 8501:8501 linkedin-visualizer:1.0
 The app is now live on http://localhost:8501/
 
 ### Using Conda
+
 Create Conda environment
 
 ```bash
@@ -118,3 +121,9 @@ Run streamlit
 ## Contributing
 
 Contributions are always welcome!
+
+## All connections
+
+Here's what happens when I display all of the companies where my connections work at
+
+<img src="media/app/all.png" width="600">
