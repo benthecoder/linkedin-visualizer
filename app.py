@@ -12,12 +12,7 @@ import shutil
 from helpers import *
 
 
-def get_data() -> pd.DataFrame:
-    # remove data folder in case it exists
-    shutil.rmtree("data", ignore_errors=True)
-
-    # upload files
-    usr_file = st.file_uploader("Upload/Drop your downloaded zip file 👇", type={"zip"})
+def get_data(usr_file, data="connections") -> pd.DataFrame:
 
     if usr_file is None:
         return
@@ -26,10 +21,10 @@ def get_data() -> pd.DataFrame:
         # Extract all the contents of zip file in current directory
         zipObj.extractall("data")
 
-    for p in Path("./data").glob("*.csv"):
-        connections_file = p.name
+    raw_df = pd.read_csv("data/Connections.csv", skiprows=3)
 
-    raw_df = pd.read_csv(f"data/{connections_file}", skiprows=3)
+    if data == "messages":
+        raw_df = pd.read_csv("data/messages.csv")
 
     # delete the data
     shutil.rmtree("data", ignore_errors=True)
@@ -43,32 +38,32 @@ def main():
         page_title="Linkedin Network Visualizer",
         page_icon="🕸️",
         initial_sidebar_state="expanded",
+        layout="wide",
     )
-
-    # import bootstrap
     st.markdown(
         """
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <h1 style='text-align: center; color: whtie;'>LinkedIn Connection Insights 🪄</h1>
+        <h3 style='text-align: center; color: white;'>The missing feature in LinkedIn</h3>
+        
         """,
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        """
-        # LinkedIn Connection Insights 🪄
-        #### The _missing feature_ in LinkedIn, get to know your connections today!
-        #### First, upload your data 💾
-        """
-    )
+    # center image
+    col1, col2, col3 = st.columns([1, 5, 1])
+    col2.image("media/app/everything.png", use_column_width=True)
+
+    st.subheader("First, upload your data 💾")
     st.caption(
         """
     Don't know where to find it? 
-    [Click here](https://github.com/benthecoder/linkedin-visualizer#how-to-get-the-data). Don't worry, [your data is in safe hands](https://docs.streamlit.io/streamlit-cloud/trust-and-security)
+    [Click here](https://github.com/benthecoder/linkedin-visualizer/data_guide).
     """
     )
+    # upload files
+    usr_file = st.file_uploader("Drop your zip file 👇", type={"zip"})
 
-    df_ori = get_data()
+    df_ori = get_data(usr_file)
 
     # if data not uploaded yet, return None
     if df_ori is None:
@@ -76,16 +71,8 @@ def main():
 
     df_clean = clean_df(df_ori)
 
-    st.markdown(
-        """
-        ---
-        ### See your data 👀
-        """
-    )
-
-    # View data
-    if st.checkbox("Show raw data"):
-        df_ori
+    with st.expander("Show raw data"):
+        st.dataframe(df_ori)
 
     # Data wrangling
     agg_df_company = agg_sum(df_clean, "company")
@@ -114,14 +101,14 @@ def main():
     )
 
     # Metrics
-    conn, comp = st.columns(2)
-    conn.metric(
+    pos, comp, conn = st.columns(3)
+    pos.metric(
         "Total Position", f"{top_pos[0:18]}..." if len(top_pos) > 18 else top_pos
     )
     comp.metric(
         "Top Company", f"{top_comp[0:18]}..." if len(top_comp) > 18 else top_comp
     )
-    st.metric("Top Connection", f"{total_conn}", len(this_month_df))
+    conn.metric("Top Connection", f"{total_conn}", len(this_month_df))
 
     # Summary
     st.subheader("Full summary")
@@ -140,27 +127,32 @@ def main():
     st.caption("Scroll down 🖱️⬇️ to see some cool visualizations!")
 
     # visualizations
-    st.sidebar.subheader("Sliders to plot more/less data")
     st.sidebar.subheader("Bar Charts")
-
     top_n = st.sidebar.slider("Top n", 0, 50, 10, key="1")
 
     # top n companies and positions
-    st.subheader(f"Top {top_n} companies")
+    st.subheader(f"Top {top_n} companies & positions")
 
-    st.plotly_chart(plot_bar(agg_df_company, top_n), use_container_width=True)
+    company_plt, positions_plt = st.columns(2)
+    company_plt.plotly_chart(plot_bar(agg_df_company, top_n), use_container_width=True)
+    positions_plt.plotly_chart(
+        plot_bar(agg_df_position, top_n), use_container_width=True
+    )
 
-    st.subheader(f"Top {top_n} positions")
-    st.plotly_chart(plot_bar(agg_df_position, top_n), use_container_width=True)
-
-    if st.checkbox("View top companies data", key="company"):
-        st.dataframe(agg_df_company)
-    if st.checkbox("View top positions data", key="position"):
-        st.dataframe(agg_df_position)
+    col1, col2 = st.columns(2)
+    with col1:
+        with st.expander("View top companies data", expanded=True):
+            st.dataframe(agg_df_company)
+    with col2:
+        with st.expander("View top positions data", expanded=True):
+            st.dataframe(agg_df_position)
 
     # connections timeline
     st.subheader("Timeline of connections")
     st.plotly_chart(plot_timeline(df_clean), use_container_width=True)
+
+    st.write("let's look at on what days do you have the most connections")
+    st.plotly_chart(plot_day(df_clean), use_container_width=True)
 
     # cumulative graph
     st.subheader("Connections overtime")
@@ -176,11 +168,54 @@ def main():
         key="3",
     )
 
+    log_bool = False
+    if st.sidebar.checkbox("Log scale"):
+        log_bool = True
+
     st.subheader("Company Network")
-    generate_network(df_clean, agg_df_company, network_num)
+    generate_network(df_clean, agg_df_company, log_bool, network_num)
 
     st.subheader("Positions Network")
-    generate_network(df_clean, agg_df_position, network_num)
+    generate_network(df_clean, agg_df_position, log_bool, network_num)
+
+    # chats
+    st.markdown("---")
+    st.subheader("Chats analysis")
+    messages = get_data(usr_file, data="messages")
+    messages["DATE"] = pd.to_datetime(messages["DATE"], format="%Y-%m-%d %H:%M:%S UTC")
+    messages["DATE"] = (
+        messages["DATE"].dt.tz_localize("UTC").dt.tz_convert("US/Central")
+    )
+
+    total, from_count, to_count = st.columns(3)
+    total.metric("Total Conversations", f"{messages['CONVERSATION ID'].nunique()}")
+    from_count.metric("Total Sent", f"{messages.FROM.nunique()}")
+    to_count.metric("Total Received", f"{messages.TO.nunique()}")
+
+    messages_FROM = agg_sum(messages, "FROM").iloc[1:]
+    messages_TO = agg_sum(messages, "TO").iloc[1:]
+
+    from_plt, to_plt = st.columns(2)
+    from_plt.plotly_chart(
+        plot_bar(messages_FROM, top_n, title="Messages FROM"), use_column_width=True
+    )
+    to_plt.plotly_chart(
+        plot_bar(messages_TO, top_n, title="Messages TO"), use_column_width=True
+    )
+
+    st.write("what hour of the day do you have the most messages?")
+
+    st.plotly_chart(plot_chat_hour(messages), use_container_width=True)
+
+    st.write(
+        "trend of your messages over time. p.s. hover over the line to see who you talked with"
+    )
+    st.plotly_chart(plot_chat_people(messages), use_container_width=True)
+
+    st.subheader("wordcloud of all chats")
+
+    with st.spinner("Wordcloud generationg..."):
+        st.pyplot(plot_wordcloud(messages))
 
     # emails
     st.write("Now to put your connections to good use")
