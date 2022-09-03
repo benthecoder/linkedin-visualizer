@@ -42,7 +42,7 @@ def main():
     )
     st.markdown(
         """
-        <h1 style='text-align: center; color: whtie;'>LinkedIn Connection Insights 🪄</h1>
+        <h1 style='text-align: center; color: whtie;'>Linkedin Network Visualizer</h1>
         <h3 style='text-align: center; color: white;'>The missing feature in LinkedIn</h3>
         
         """,
