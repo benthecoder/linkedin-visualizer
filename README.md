@@ -4,7 +4,7 @@
 
 Get helpful statistics on your LinkedIn connection now!
 
-Read the article to know more about this project: [Visualize your LinkedIn Network with Python](https://medium.com/bitgrit-data-science-publication/visualize-your-linkedin-network-with-python-59a213786c4)
+Read this article to know more about this project: [Visualize your LinkedIn Network with Python](https://medium.com/bitgrit-data-science-publication/visualize-your-linkedin-network-with-python-59a213786c4)
 
 ![all](media/app/everything.png)
 
