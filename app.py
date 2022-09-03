@@ -178,6 +178,21 @@ def main():
     st.subheader("Positions Network")
     generate_network(df_clean, agg_df_position, log_bool, network_num)
 
+    # emails
+    st.write("Now to put your connections to good use")
+    st.subheader("Who can you cold email 📧?")
+
+    emails = df_clean[df_clean.notnull()["email_address"]].drop(
+        ["connected_on", "weekday"], axis=1
+    )
+
+    st.write(f"Answer: {len(emails)} of your connections shared their emails!")
+    st.dataframe(emails)
+
+    st.sidebar.write(
+        "Interested in the code? Head over to the [Github Repo](https://github.com/benthecoder/linkedin-visualizer)"
+    )
+
     # chats
     st.markdown("---")
     st.subheader("Chats analysis")
@@ -214,23 +229,8 @@ def main():
 
     st.subheader("wordcloud of all chats")
 
-    with st.spinner("Wordcloud generationg..."):
+    with st.spinner("Wordcloud generating..."):
         st.pyplot(plot_wordcloud(messages))
-
-    # emails
-    st.write("Now to put your connections to good use")
-    st.subheader("Who can you cold email 📧?")
-
-    emails = df_clean[df_clean.notnull()["email_address"]].drop(
-        ["connected_on"], axis=1
-    )
-
-    st.write(f"Answer: {len(emails)} of your connections shared their emails!")
-    st.dataframe(emails)
-
-    st.sidebar.write(
-        "Interested in the code? Head over to the [Github Repo](https://github.com/benthecoder/linkedin-visualizer)"
-    )
 
 
 if __name__ == "__main__":
