@@ -57,7 +57,7 @@ def main():
     st.caption(
         """
     Don't know where to find it? 
-    [Click here](https://github.com/benthecoder/linkedin-visualizer/data_guide).
+    [Click here](https://github.com/benthecoder/linkedin-visualizer/tree/main/data_guide#how-to-get-the-data).
     """
     )
     # upload files
