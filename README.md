@@ -85,6 +85,16 @@ Run streamlit
   streamlit run app.py
 ```
 
+### Using Poetry
+
+```bash
+  poetry install
+```
+
+```bash
+  poetry run streamlit run app.py
+```
+
 ## Contributing
 
 Contributions are always welcome!

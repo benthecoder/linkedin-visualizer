@@ -44,7 +44,7 @@ def main():
         """
         <h1 style='text-align: center; color: whtie;'>Linkedin Network Visualizer</h1>
         <h3 style='text-align: center; color: white;'>The missing feature in LinkedIn</h3>
-        
+
         """,
         unsafe_allow_html=True,
     )
@@ -56,7 +56,7 @@ def main():
     st.subheader("First, upload your data 💾")
     st.caption(
         """
-    Don't know where to find it? 
+    Don't know where to find it?
     [Click here](https://github.com/benthecoder/linkedin-visualizer/tree/main/data_guide#how-to-get-the-data).
     """
     )
@@ -95,7 +95,7 @@ def main():
     # calculating stats
     st.markdown(
         """
-        ---    
+        ---
         ### Here's a breakdown of your connections 👇
         """
     )

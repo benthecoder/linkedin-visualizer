@@ -1,4 +1,3 @@
-janitor==0.1.1
 matplotlib==3.5.3
 networkx==2.6.3
 nltk==3.6.7
