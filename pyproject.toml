@@ -9,7 +9,7 @@ readme = "README.md"
 repository = "https://github.com/python-poetry/poetry"
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "3.8"
 networkx = "^2.8.6"
 matplotlib = "^3.5.3"
 nltk = "^3.7"

@@ -47,13 +47,13 @@ Go to the project directory
 
 Build an Image
 
-```
+```bash
 docker build -t linkedin-visualizer:1.0 .
 ```
 
 Run the Image
 
-```
+```bash
 docker run -p 8501:8501 linkedin-visualizer:1.0
 ```
 
@@ -86,6 +86,8 @@ Run streamlit
 ```
 
 ### Using Poetry
+
+first make sure you have python 3.8
 
 ```bash
   poetry install
