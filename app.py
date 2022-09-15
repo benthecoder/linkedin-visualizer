@@ -102,9 +102,7 @@ def main():
 
     # Metrics
     pos, comp, conn = st.columns(3)
-    pos.metric(
-        "Total Position", f"{top_pos[0:18]}..." if len(top_pos) > 18 else top_pos
-    )
+    pos.metric("Top Position", f"{top_pos[0:18]}..." if len(top_pos) > 18 else top_pos)
     comp.metric(
         "Top Company", f"{top_comp[0:18]}..." if len(top_comp) > 18 else top_comp
     )

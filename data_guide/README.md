@@ -16,7 +16,7 @@ Find "Get a copy of your data"
 
 ![1](4.png)
 
-Click on connections only
+Click on download larger data archive
 
 ![1](5.png)
 
