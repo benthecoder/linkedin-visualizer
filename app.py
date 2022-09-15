@@ -106,7 +106,7 @@ def main():
     comp.metric(
         "Top Company", f"{top_comp[0:18]}..." if len(top_comp) > 18 else top_comp
     )
-    conn.metric("Top Connection", f"{total_conn}", len(this_month_df))
+    conn.metric("Total Connections", f"{total_conn}", len(this_month_df))
 
     # Summary
     st.subheader("Full summary")
